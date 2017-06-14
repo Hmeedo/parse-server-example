@@ -12,12 +12,21 @@ if (!databaseUri) {
   console.log('DATABASE_URI not specified, falling back to localhost.');
 }
 
+ var account = process.env.STORAGE_ACCOUNT_NAME;		
+ var container = process.env.STORAGE_CONTAINER_NAME;		
+ var options = {		
+     accessKey: process.env.FILE_ACCESS_KEY || '',		
+     directAccess: true // If set to true, files will be served by Azure Blob Storage directly		
+ }
+
 var api = new ParseServer({
   databaseURI: databaseUri || 'mongodb://localhost:27017/dev',
   cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
   appId: process.env.APP_ID || 'myAppId',
   masterKey: process.env.MASTER_KEY || '', //Add your master key here. Keep it secret!
   serverURL: process.env.SERVER_URL || 'http://localhost:1337/parse',  // Don't forget to change to https if needed
+  maxUploadSize: process.env.MAX_UPLOAD_SIZE,
+   filesAdapter: new AzureStorageAdapter(account, container, options),
   liveQuery: {
     classNames: ["Posts", "Comments"] // List of classes to support for query subscriptions
   }
@@ -34,6 +43,9 @@ app.use('/public', express.static(path.join(__dirname, '/public')));
 // Serve the Parse API on the /parse URL prefix
 var mountPath = process.env.PARSE_MOUNT || '/parse';
 app.use(mountPath, api);
+
+var mountPath2 = process.env.PARSE_MOUNT2 || '/parse';
+app.use(mountPath2, api);
 
 // Parse Server plays nicely with the rest of your web routes
 app.get('/', function(req, res) {
