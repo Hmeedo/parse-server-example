@@ -15,7 +15,7 @@ if (!databaseUri) {
  var account = process.env.STORAGE_ACCOUNT_NAME;		
  var container = process.env.STORAGE_CONTAINER_NAME;		
  var options = {		
-     accessKey: process.env.FILE_ACCESS_KEY || '',		
+     accessKey: process.env.FILE_ACCESS_KEY || 'key',		
      directAccess: true // If set to true, files will be served by Azure Blob Storage directly		
  }
 
