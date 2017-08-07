@@ -57,12 +57,13 @@ app.get('/', function(req, res) {
 // Remove this before launching your app
 
 app.post('/test', function(req, res) {
-  res.redirect(307, 'http://ec2-52-43-213-79.us-west-2.compute.amazonaws.com:80/parse');
+   res.redirect(307, 'http://ec2-52-43-213-79.us-west-2.compute.amazonaws.com:80' + req.path);
 });
 
 app.get('/test', function(req, res) {
   //res.sendFile(path.join(__dirname, '/public/test.html'));
-  res.redirect(307, 'http://ec2-52-43-213-79.us-west-2.compute.amazonaws.com:80/parse');
+  res.redirect(307, 'http://ec2-52-43-213-79.us-west-2.compute.amazonaws.com:80' + req.path);
+//   res.redirect(307, 'http://ec2-52-43-213-79.us-west-2.compute.amazonaws.com:80/parse');
 });
 
 var port = process.env.PORT || 1337;
