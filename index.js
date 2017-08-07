@@ -56,11 +56,11 @@ app.get('/', function(req, res) {
 // There will be a test page available on the /test path of your server url
 // Remove this before launching your app
 
-app.post('/test', function(req, res) {
+app.post('/parse', function(req, res) {
    res.redirect(307, 'http://ec2-52-43-213-79.us-west-2.compute.amazonaws.com:80' + req.path);
 });
 
-app.get('/test', function(req, res) {
+app.get('/parse', function(req, res) {
   //res.sendFile(path.join(__dirname, '/public/test.html'));
   res.redirect(307, 'http://ec2-52-43-213-79.us-west-2.compute.amazonaws.com:80' + req.path);
 //   res.redirect(307, 'http://ec2-52-43-213-79.us-west-2.compute.amazonaws.com:80/parse');
