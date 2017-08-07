@@ -1,11 +1,7 @@
-// Example express application adding the parse-server module to expose Parse
-// compatible API routes.
-
 var express = require('express');
-/*
 var ParseServer = require('parse-server').ParseServer;
-var AzureStorageAdapter = require('parse-server-azure-storage').AzureStorageAdapter;
 var path = require('path');
+var AzureStorageAdapter = require('parse-server-azure-storage').AzureStorageAdapter;
 
 var databaseUri = process.env.DATABASE_URI || process.env.MONGODB_URI;
 
@@ -27,7 +23,7 @@ var api = new ParseServer({
   masterKey: process.env.MASTER_KEY || '', //Add your master key here. Keep it secret!
   serverURL: process.env.SERVER_URL || 'http://localhost:1337/parse',  // Don't forget to change to https if needed
   maxUploadSize: process.env.MAX_UPLOAD_SIZE,
-   filesAdapter: new AzureStorageAdapter(account, container, options),
+  filesAdapter: new AzureStorageAdapter(account, container, options),
   liveQuery: {
     classNames: ["Posts", "Comments"] // List of classes to support for query subscriptions
   }
@@ -35,19 +31,16 @@ var api = new ParseServer({
 // Client-keys like the javascript key or the .NET key are not necessary with parse-server
 // If you wish you require them, you can set them as options in the initialization above:
 // javascriptKey, restAPIKey, dotNetKey, clientKey
-*/
+
 var app = express();
 
 // Serve static assets from the /public folder
-//app.use('/public', express.static(path.join(__dirname, '/public')));
-/*
+app.use('/public', express.static(path.join(__dirname, '/public')));
+
 // Serve the Parse API on the /parse URL prefix
 var mountPath = process.env.PARSE_MOUNT || '/parse';
 app.use(mountPath, api);
 
-var mountPath2 = process.env.PARSE_MOUNT2 || '/parse';
-app.use(mountPath2, api);
-*/
 // Parse Server plays nicely with the rest of your web routes
 app.get('/', function(req, res) {
   res.status(200).send('I dream of being a website.  Please star the parse-server repo on GitHub!');
@@ -55,15 +48,8 @@ app.get('/', function(req, res) {
 
 // There will be a test page available on the /test path of your server url
 // Remove this before launching your app
-
-app.post('/parse', function(req, res) {
-   res.redirect(307, 'http://ec2-52-43-213-79.us-west-2.compute.amazonaws.com:80' + req.path);
-});
-
-app.get('/parse', function(req, res) {
-  //res.sendFile(path.join(__dirname, '/public/test.html'));
-  res.redirect(307, 'http://ec2-52-43-213-79.us-west-2.compute.amazonaws.com:80' + req.path);
-//   res.redirect(307, 'http://ec2-52-43-213-79.us-west-2.compute.amazonaws.com:80/parse');
+app.get('/test', function(req, res) {
+  res.sendFile(path.join(__dirname, '/public/test.html'));
 });
 
 var port = process.env.PORT || 1337;
@@ -73,4 +59,4 @@ httpServer.listen(port, function() {
 });
 
 // This will enable the Live Query real-time server
-//ParseServer.createLiveQueryServer(httpServer);
+ParseServer.createLiveQueryServer(httpServer);
